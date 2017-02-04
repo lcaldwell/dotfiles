@@ -1,4 +1,4 @@
-" Setup dein (package manager) 
+" Setup dein (package manager)
 " - ':call dein#install()' to install new packages
 " ------------------------------------------------------------------------------------------------------------------------{{{
 
@@ -22,12 +22,20 @@ call dein#add('Shougo/neosnippet-snippets')
 
 " File management
 call dein#add('scrooloose/nerdtree')
+call dein#add('jistr/vim-nerdtree-tabs')
 call dein#add('Xuyuanp/nerdtree-git-plugin')
+
+" Git
+call dein#add('airblade/vim-gitgutter')
+call dein#add('tpope/vim-fugitive')
 
 " Theme
 call dein#add('mhartington/oceanic-next')
 call dein#add('vim-airline/vim-airline')
 call dein#add('ryanoasis/vim-devicons')
+
+" Navigation
+call dein#add('christoomey/vim-tmux-navigator')
 
 " Required:
 call dein#end()
@@ -42,7 +50,7 @@ syntax enable
 "  call dein#install()
 "endif
 
-" }}}-----------------------------------------------------------------------------------------------------------------------
+" }}}------------------------------------------------------------------------------------------------------------------------
 
 
 " System settings
@@ -51,6 +59,12 @@ set noshowmode " only show status in airline bar
 set termguicolors " allow true colors
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1 " allow cursor shape to change
 set number " enable line numbers
+set undofile
+set undodir="$HOME/.VIM_UNDO_FILES"
+" make esc remove highlighting from search (using /)
+nnoremap <esc> :noh<return><esc>
+" remap default : to ;
+nnoremap ; :
 " }}}------------------------------------------------------------------------------------------------------------------------
 
 
@@ -58,22 +72,41 @@ set number " enable line numbers
 " ------------------------------------------------------------------------------------------------------------------------{{{
 syntax on " make sure syntax highlighting is on
 colorscheme OceanicNext " Mike Hartingtons OceanicNext colour scheme (added in the packages section)
-
-let g:airline_theme='oceanicnext'
 " }}}------------------------------------------------------------------------------------------------------------------------
 
 
-" NERDTree 
+" Airline
 " ------------------------------------------------------------------------------------------------------------------------{{{
-let g:NERDTreeIndicatorMapCustom = {
-    \ "Modified"  : "✹",
-    \ "Staged"    : "✚",
-    \ "Untracked" : "✭",
-    \ "Renamed"   : "➜",
-    \ "Unmerged"  : "═",
-    \ "Deleted"   : "✖",
-    \ "Dirty"     : "✗",
-    \ "Clean"     : "✔︎",
-    \ "Unknown"   : "?"
-    \ }
+let g:airline_theme='oceanicnext'
+let g:airline_powerline_fonts=1 " allow airline to use the powerline fonts
+" }}}------------------------------------------------------------------------------------------------------------------------
+
+
+" NERDTree
+" ------------------------------------------------------------------------------------------------------------------------{{{
+map <silent> - :NERDTreeTabsToggle<CR>
+map <silent> = :NERDTreeFocusToggle<CR>
+let NERDTreeMinimalUI=1 " remove helpline at top of NERDTree
+" }}}------------------------------------------------------------------------------------------------------------------------
+
+
+" Navigate between vim buffers and tmux panels
+" ------------------------------------------------------------------------------------------------------------------------{{{
+let g:tmux_navigator_no_mappings = 1
+nnoremap <silent> <C-j> :TmuxNavigateDown<cr>
+nnoremap <silent> <C-k> :TmuxNavigateUp<cr>
+nnoremap <silent> <C-l> :TmuxNavigateRight<cr>
+nnoremap <silent> <C-h> :TmuxNavigateLeft<CR>
+nnoremap <silent> <C-;> :TmuxNavigatePrevious<cr>
+tmap <C-j> <C-\><C-n>:TmuxNavigateDown<cr>
+tmap <C-k> <C-\><C-n>:TmuxNavigateUp<cr>
+tmap <C-l> <C-\><C-n>:TmuxNavigateRight<cr>
+tmap <C-h> <C-\><C-n>:TmuxNavigateLeft<CR>
+tmap <C-;> <C-\><C-n>:TmuxNavigatePrevious<cr>
+" }}}------------------------------------------------------------------------------------------------------------------------
+
+
+" GitGutter
+" ------------------------------------------------------------------------------------------------------------------------{{{
+let g:gitgutter_sign_column_always = 1
 " }}}------------------------------------------------------------------------------------------------------------------------
